@@ -1,6 +1,6 @@
 #include "BigNumber.h"
 
-void BigNumber::chenge_sign() {
+void BigNumber::change_sign() {
     sign *= -1;
 }
 

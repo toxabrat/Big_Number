@@ -23,7 +23,7 @@ class BigNumber{
 
         std::string to_string () const;
         std::string to_string_with_zeros () const;
-        void chenge_sign();
+        void change_sign();
         int get_sign() const;
 
         BigNumber operator- () const;
