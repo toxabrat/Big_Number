@@ -3,8 +3,8 @@ void Big0 (int& sign, std::vector <int> &whole_part, std::vector <int> &fraction
                                                     const int whole_size, const int fraction_size, const int chunk)
 {
     sign = 1;
-    std::fill_n(whole_part.begin(), whole_size, chunk - 1);
-    std::fill_n(fraction.begin(), fraction_size, chunk - 1);
+    std::fill_n(whole_part.begin(), whole_size, 0);
+    std::fill_n(fraction.begin(), fraction_size, 0);
 }
 
 void MAXBigNumber (int& sign, std::vector <int>& whole_part, std::vector <int>& fraction, 
@@ -353,30 +353,49 @@ BigNumber& BigNumber::operator/= (const BigNumber& other)
     Big0(sign, whole_part, fraction, whole_size, fraction_size, chunk);
 
     for(int i = whole_size - 1; i > -1; i--) {
+        bool flag = false;
         int left = -1, right = chunk - 1;
         while(right - left > 1) {
             int x = (left + right) / 2;
             whole_part[i] = x;
-            if (abs(*this * other) > abs(dividend) || abs(*this * other) == abs(dividend)) {
+            if (abs(*this * other) > abs(dividend)) {
                 right = x;
+            } else if(abs(*this * other) == abs(dividend)) {
+                right = x;
+                flag = true;
             } else {
                 left = x;
             }
         }
-        whole_part[i] = right;
+        
+        if (!flag && right != 0){
+            whole_part[i] = right - 1;
+        } else {
+            whole_part[i] = right;
+        }
     }
+
     for(int i = 0; i < fraction_size; i++) {
+        bool flag = false;
         int left = -1, right = chunk - 1;
         while(right - left > 1) {
             int x = (left + right) / 2;
             fraction[i] = x;
-            if (abs(*this * other) > abs(dividend) || abs(*this * other) == abs(dividend)) {
+            if (abs(*this * other) > abs(dividend)) {
                 right = x;
+            } else if(abs(*this * other) == abs(dividend)) {
+                right = x;
+                flag = true;
             } else {
                 left = x;
             }
         }
-        fraction[i] = right;
+
+        if (!flag && right != 0){
+            fraction[i] = right - 1;
+        } else {
+            fraction[i] = right;
+        }
     }
 
     if(sign == other.sign) {

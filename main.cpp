@@ -4,6 +4,8 @@
 
 int main() {
     //std::string PI = "3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196";
+    std::cout<<"!!!\n"<<((BigNumber("11230000423242340009590834920903290438992000234.20000002342342304023424938249324") / BigNumber("-2340324920349032234903249029.234092340929423032324")) * BigNumber("-2340324920349032234903249029.234092340929423032324")) .to_string();
+    return 0;
     std::cout<<"Введите точность числа Pi от 1 до 200:";
     int accuracy;
     std::cin>>accuracy;
@@ -17,13 +19,14 @@ int main() {
         } else if(i < 100) {
             s.push_back(i/10%10 + '0');
             s.push_back(i%10 + '0');
-        } else{
+        } else {
             s.push_back(i/100 + '0');
             s.push_back(i/10%10 + '0');
             s.push_back(i%10 + '0');
         }
         BigNumber v = s * BigNumber("8");
-        pi += stpk * (BigNumber("4") / (v + BigNumber("1")) - BigNumber("2") / (v + BigNumber("4")) - BigNumber("1") / (v + BigNumber("5")) - BigNumber("1") / (v + BigNumber("6")));
+        pi += stpk * (BigNumber("4") / (v + BigNumber("1")) - BigNumber("2") / (v + BigNumber("4"))
+                                     - BigNumber("1") / (v + BigNumber("5")) - BigNumber("1") / (v + BigNumber("6")));
         stpk *= BigNumber("0.0625");
     }
     clock_t t2 = clock();
