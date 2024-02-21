@@ -1,4 +1,38 @@
 #include "BigNumber.h"
+
+void BigNumber::chenge_sign() {
+    sign *= -1;
+}
+
+int BigNumber::get_sign() const{
+    return sign;
+}
+
+std::string BigNumber::to_string_with_zeros () const 
+{
+    std::string s = "";
+    if(sign == -1) {
+        s.push_back('-');
+    }
+
+    for(int i = whole_size - 1; i > -1; i--) {
+        int degre10 = chunk;
+        while (degre10 > 1) {
+            s.push_back('0' + whole_part[i] % degre10 * 10 / degre10);
+            degre10 /= 10;
+        }
+    }
+    s.push_back('.');
+    for(int i = 0; i < fraction_size; i++) {
+        int degre10 = chunk;
+        while (degre10 > 1) {
+            s.push_back('0' + fraction[i] % degre10 * 10 / degre10);
+            degre10 /= 10;
+        }
+    }
+    return s;
+}
+
 void Big0 (int& sign, std::vector <int> &whole_part, std::vector <int> &fraction, 
                                                     const int whole_size, const int fraction_size, const int chunk)
 {
@@ -24,7 +58,7 @@ BigNumber BigNumber::operator- () const
 
 BigNumber abs(const BigNumber& argument)
 {
-    if(argument.sign == 1) {
+    if(argument.get_sign() == 1) {
         return argument;
     } else {
         return -argument;
@@ -150,8 +184,7 @@ std::string BigNumber::to_string() const
 
 bool operator== (const BigNumber& first, const BigNumber& second)
 {
-    return (first.sign == second.sign && first.whole_part == second.whole_part 
-                                                            && first.fraction == second.fraction);
+    return (first.to_string() == second.to_string());
 }
 
 bool operator!= (const BigNumber& first, const BigNumber& second)
@@ -161,30 +194,16 @@ bool operator!= (const BigNumber& first, const BigNumber& second)
 
 bool operator< (const BigNumber& first, const BigNumber& second)
 {
-    if(first.sign != second.sign)
+    if(first.get_sign() != second.get_sign())
     {
-        return first.sign < second.sign;
-    } 
+        return first.get_sign() < second.get_sign();
+    }
 
-    int flag = 0;
-    for(int i = first.whole_size - 1; i > -1 && !flag; i--) {
-        if(first.whole_part[i] < second.whole_part[i]) {
-            flag = 1;
-        } else if(first.whole_part[i] > second.whole_part[i]) {
-            flag = -1;
-        }
+    if(first.get_sign() == -1) {
+        return first.to_string_with_zeros() > second.to_string_with_zeros();
+    } else {
+        return first.to_string_with_zeros() < second.to_string_with_zeros();
     }
-    for(int i = 0; i < first.fraction_size && !flag; i++) {
-        if(first.fraction[i] < second.fraction[i]) {
-            flag = 1;
-        } else if(first.fraction[i] > second.fraction[i]) {
-            flag = -1;
-        }
-    }
-    if((flag == 1 && first.sign == 1) || (flag == -1 && first.sign == -1)){
-        return true;
-    }
-    return false;
 }
 
 bool operator> (const BigNumber& first, const BigNumber& second)
