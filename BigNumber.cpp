@@ -352,12 +352,16 @@ BigNumber& BigNumber::operator/= (const BigNumber& other)
     BigNumber dividend = BigNumber(*this);
     Big0(sign, whole_part, fraction, whole_size, fraction_size, chunk);
 
-    for(int i = whole_size - 1; i > -1; i--) {
+    for(int i = whole_size - 1; i >= -fraction_size; i--) {
         bool flag = false;
         int left = -1, right = chunk - 1;
         while(right - left > 1) {
             int x = (left + right) / 2;
-            whole_part[i] = x;
+            if(i >= 0) {
+                whole_part[i] = x;
+            } else {
+                fraction[-i - 1] = x;
+            }
             if (abs(*this * other) > abs(dividend)) {
                 right = x;
             } else if(abs(*this * other) == abs(dividend)) {
@@ -368,33 +372,18 @@ BigNumber& BigNumber::operator/= (const BigNumber& other)
             }
         }
         
-        if (!flag && right != 0){
-            whole_part[i] = right - 1;
-        } else {
-            whole_part[i] = right;
-        }
-    }
-
-    for(int i = 0; i < fraction_size; i++) {
-        bool flag = false;
-        int left = -1, right = chunk - 1;
-        while(right - left > 1) {
-            int x = (left + right) / 2;
-            fraction[i] = x;
-            if (abs(*this * other) > abs(dividend)) {
-                right = x;
-            } else if(abs(*this * other) == abs(dividend)) {
-                right = x;
-                flag = true;
+        if (!flag && right != 0) {
+            if(i >= 0) {
+                whole_part[i] = right - 1;
             } else {
-                left = x;
+                fraction[-i - 1] = right - 1;
             }
-        }
-
-        if (!flag && right != 0){
-            fraction[i] = right - 1;
         } else {
-            fraction[i] = right;
+            if(i >= 0) {
+                whole_part[i] = right;
+            } else {
+                fraction[-i - 1] = right;
+            }
         }
     }
 
