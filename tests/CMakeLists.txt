@@ -1,0 +1,7 @@
+file(GLOB_RECURSE TESTS "*.cpp")
+add_subdirectory(googletest)
+include(GoogleTest)
+add_executable(tests ${TESTS})
+target_link_libraries(tests gtest gtest_main BigNumber)
+enable_testing()
+gtest_discover_tests(tests)

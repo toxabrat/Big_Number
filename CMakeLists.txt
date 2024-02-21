@@ -9,16 +9,9 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/BigNumber.h
 )
 
-add_library(BigNumber STATIC ${SOURCES})
-
-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
-include_directories(${Boost_INCLUDE_DIRS})
-
-target_link_libraries(BigNumber Boost::unit_test_framework)
+add_library(BigNumber SHARED ${SOURCES})
 
 add_executable(main main.cpp)
 target_link_libraries(main BigNumber)
 
-add_subdirectory(googletest)
-enable_testing()
-add_test(NAME BigNumberTest COMMAND BigNumberTest)
+add_subdirectory(tests)
