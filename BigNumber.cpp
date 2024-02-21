@@ -268,6 +268,24 @@ BigNumber& BigNumber::operator-= (const BigNumber& other)
             }
         }
 
+        for(int i = fraction_size - 1; i > -1; i--) {
+            if(fraction[i] < 0){
+                fraction[i] = chunk + fraction[i];
+                if(i - 1 == -1) {
+                    whole_part[0] -= 1;
+                } else {
+                    fraction[i + 1] -= 1; 
+                }
+            }
+        }
+
+        for(int i = 0; i < whole_size; i++) {
+            if(whole_part[i] < 0){
+                whole_part[i] = chunk + whole_part[i];
+                whole_part[i + 1] -= 1; 
+            }
+        }
+
         if((comparison && other.sign == 1) || (!comparison && other.sign == -1)){
             sign = 1;
         } else {

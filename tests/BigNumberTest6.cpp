@@ -14,3 +14,11 @@ TEST(BigNumberTest, multiplication2) {
 TEST(BigNumberTest, multiplication3) {
     ASSERT_EQ(BigNumber("1") * BigNumber("0"), BigNumber("0"));
 }
+
+TEST(BigNumberTest, multiplication4) {
+    ASSERT_EQ(BigNumber("8") * BigNumber("0.125"), BigNumber("1"));
+}
+
+TEST(BigNumberTest, multiplication5) {
+    ASSERT_EQ(BigNumber("11") * BigNumber("11"), BigNumber("121"));
+}
