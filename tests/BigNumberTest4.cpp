@@ -1,0 +1,7 @@
+#include <gtest/gtest.h>
+#include "BigNumber.h"
+
+TEST(BigNumberTest, addition) {
+    ASSERT_EQ(BigNumber("-112300004292192000234.2343284939248324938249324") + BigNumber("-9843294234023040120.2343284939248324938249324"),
+                              BigNumber("-122143298526215040354.4686569878496649876498648"));
+}

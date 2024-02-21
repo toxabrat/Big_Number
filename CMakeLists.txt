@@ -7,7 +7,6 @@ add_compile_options(-O2 -Wall)
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/BigNumber.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BigNumber.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/BigNumberTest.cpp
 )
 
 add_library(BigNumber STATIC ${SOURCES})
@@ -20,5 +19,6 @@ target_link_libraries(BigNumber Boost::unit_test_framework)
 add_executable(main main.cpp)
 target_link_libraries(main BigNumber)
 
+add_subdirectory(googletest)
 enable_testing()
 add_test(NAME BigNumberTest COMMAND BigNumberTest)
