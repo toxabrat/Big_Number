@@ -7,7 +7,7 @@
 # Примерный вид сборки
 ```bash
 git clone --recurse-submodules https://github.com/toxabrat/Big_Number.git
-cd BigNumber
+cd Big_Number
 mkdir cmake_build
 cd cmake_build
 cmake ..
