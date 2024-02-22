@@ -1,11 +1,33 @@
 #include "BigNumber.h"
 
-void BigNumber::change_sign() {
+void BigNumber::change_sign () 
+{
     sign *= -1;
 }
 
-int BigNumber::get_sign() const{
+int BigNumber::get_sign () const
+{
     return sign;
+}
+
+int BigNumber::get_whole_number (int index) const
+{
+    return whole_part[index];
+}
+
+int BigNumber::get_fraction_number (int index) const
+{
+    return fraction[index];
+}
+
+int BigNumber::get_whole_size () const 
+{
+    return whole_size;
+}
+
+int BigNumber::get_fraction_size () const 
+{
+    return fraction_size;
 }
 
 std::string BigNumber::to_string_with_zeros () const 
@@ -184,7 +206,20 @@ std::string BigNumber::to_string() const
 
 bool operator== (const BigNumber& first, const BigNumber& second)
 {
-    return (first.to_string() == second.to_string());
+    if(first.get_sign() != second.get_sign()) {
+        return false;
+    }
+    for(int i = first.get_whole_size() - 1; i > -1; i--) {
+        if(first.get_whole_number(i) != second.get_whole_number(i)) {
+            return false;
+        }
+    }
+    for(int i = first.get_fraction_size() - 1; i > -1; i--) {
+        if(first.get_fraction_number(i) != second.get_fraction_number(i)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool operator!= (const BigNumber& first, const BigNumber& second)
@@ -194,16 +229,49 @@ bool operator!= (const BigNumber& first, const BigNumber& second)
 
 bool operator< (const BigNumber& first, const BigNumber& second)
 {
-    if(first.get_sign() != second.get_sign())
-    {
+    if(first.get_sign() != second.get_sign()) {
         return first.get_sign() < second.get_sign();
     }
-
     if(first.get_sign() == -1) {
-        return first.to_string_with_zeros() > second.to_string_with_zeros();
-    } else {
-        return first.to_string_with_zeros() < second.to_string_with_zeros();
+        for(int i = first.get_whole_size() - 1; i > -1; i--) {
+            if(first.get_whole_number(i) > second.get_whole_number(i)) {
+                return true;
+            }
+            if(first.get_whole_number(i) < second.get_whole_number(i)) {
+                return false;
+            }
+        }
+        for(int i = 0; i < first.get_fraction_size(); i++) {
+            if(first.get_fraction_number(i) > second.get_fraction_number(i)) {
+                return true;
+            }
+            if(first.get_fraction_number(i) < second.get_fraction_number(i)) {
+                return false;
+            }
+        }
+        return false;
     }
+
+    if(first.get_sign() == 1) {
+        for(int i = first.get_whole_size() - 1; i > -1; i--) {
+            if(first.get_whole_number(i) < second.get_whole_number(i)) {
+                return true;
+            }
+            if(first.get_whole_number(i) > second.get_whole_number(i)) {
+                return false;
+            }
+        }
+        for(int i = 0; i < first.get_fraction_size(); i++) {
+            if(first.get_fraction_number(i) < second.get_fraction_number(i)) {
+                return true;
+            }
+            if(first.get_fraction_number(i) > second.get_fraction_number(i)) {
+                return false;
+            }
+        }
+        return false;
+    }
+    return false;
 }
 
 bool operator> (const BigNumber& first, const BigNumber& second)

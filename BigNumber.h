@@ -8,7 +8,7 @@
 #include <cmath>
 #include <stdlib.h>
 
-class BigNumber{
+class BigNumber {
     private:
         const int whole_size = 13;
         const int fraction_size = 27;
@@ -24,7 +24,11 @@ class BigNumber{
         std::string to_string () const;
         std::string to_string_with_zeros () const;
         void change_sign();
-        int get_sign() const;
+        int get_sign () const;
+        int get_whole_number (int index) const;
+        int get_fraction_number (int index) const;
+        int get_whole_size () const;
+        int get_fraction_size () const;
 
         BigNumber operator- () const;
         BigNumber& operator+= (const BigNumber&);
