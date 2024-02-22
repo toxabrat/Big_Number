@@ -22,7 +22,6 @@ class BigNumber {
         BigNumber();
 
         std::string to_string () const;
-        std::string to_string_with_zeros () const;
         void change_sign();
         int get_sign () const;
         int get_whole_number (int index) const;

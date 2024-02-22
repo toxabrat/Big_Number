@@ -30,31 +30,6 @@ int BigNumber::get_fraction_size () const
     return fraction_size;
 }
 
-std::string BigNumber::to_string_with_zeros () const 
-{
-    std::string s = "";
-    if(sign == -1) {
-        s.push_back('-');
-    }
-
-    for(int i = whole_size - 1; i > -1; i--) {
-        int degre10 = chunk;
-        while (degre10 > 1) {
-            s.push_back('0' + whole_part[i] % degre10 * 10 / degre10);
-            degre10 /= 10;
-        }
-    }
-    s.push_back('.');
-    for(int i = 0; i < fraction_size; i++) {
-        int degre10 = chunk;
-        while (degre10 > 1) {
-            s.push_back('0' + fraction[i] % degre10 * 10 / degre10);
-            degre10 /= 10;
-        }
-    }
-    return s;
-}
-
 void Big0 (int& sign, std::vector <int> &whole_part, std::vector <int> &fraction, 
                                                     const int whole_size, const int fraction_size, const int chunk)
 {
@@ -395,6 +370,7 @@ BigNumber& BigNumber::operator*= (const BigNumber& other)
     }
     
     int last_whole_chunk = 0, last_fract_chunk = 0; 
+
     for(int i = 0; i < whole_size; i++) {
         if(whole_part[i] || other.get_whole_number(i)) {last_whole_chunk = i;}
     }
