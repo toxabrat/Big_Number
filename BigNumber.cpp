@@ -393,11 +393,19 @@ BigNumber& BigNumber::operator*= (const BigNumber& other)
         Big0(sign, whole_part, fraction, whole_size, fraction_size, chunk);
         return *this;
     }
+    
+    int last_whole_chunk = 0, last_fract_chunk = 0; 
+    for(int i = 0; i < whole_size; i++) {
+        if(whole_part[i] || other.get_whole_number(i)) {last_whole_chunk = i;}
+    }
+    for(int i = 0; i < fraction_size; i++) {
+        if(fraction[i] || other.get_fraction_number(i)) {last_fract_chunk = i;}
+    }
 
     std::vector <long long> mult_whole (whole_size);
     std::vector <long long> mult_fraction (fraction_size);
-    for(int i = -fraction_size; i < whole_size; i ++) {
-        for(int i1 = std::max(-fraction_size, -fraction_size - i); i + i1 < whole_size && i1 < whole_size; i1++) {
+    for(int i = -last_fract_chunk - 1; i < last_whole_chunk + 1; i ++) {
+        for(int i1 = std::max(-last_fract_chunk - 1, -fraction_size - i); i + i1 < whole_size && i1 < last_whole_chunk + 1; i1++) {
             long long value1, value2;
             if (i >= 0) {
                 value1 = whole_part[i];
